@@ -10,20 +10,20 @@
 }
 
 :root {
-    --black: #000000;
-    --black-light: #0a0a0a;
-    --dark: #1a1a1a;
-    --dark-mid: #111111;
+    --black: #1e1e1e;
+    --black-light: #252525;
+    --dark: #2a2a2a;
+    --dark-mid: #222222;
     --gold: #b99a45;
     --gold-light: #c7ae6a;
     --gold-pale: #d5c28f;
     --gold-softest: #e3d6b4;
     --white: #f5f0e8;
     --white-pure: #ffffff;
-    --text-body: #999999;
-    --text-muted: #666666;
-    --border: rgba(185, 154, 69, 0.15);
-    --border-light: rgba(185, 154, 69, 0.08);
+    --text-body: #cccccc;
+    --text-muted: #9c9c9c;
+    --border: rgba(185, 154, 69, 0.25);
+    --border-light: rgba(185, 154, 69, 0.15);
     --glow: rgba(185, 154, 69, 0.3);
 
     --font-display: "Playfair Display", Georgia, serif;
@@ -385,7 +385,7 @@ a {
 }
 
 .nav-logo-img {
-    height: 45px;
+    height: 52px;
     width: auto;
     object-fit: contain;
     display: block;
@@ -393,7 +393,7 @@ a {
 }
 
 .nav-logo:hover .nav-logo-img {
-    transform: scale(1.04);
+    transform: scale(1.02);
 }
 
 .nav-links {
@@ -730,12 +730,12 @@ a {
     display: flex;
     align-items: center;
     gap: 16px;
-    opacity: 0.4;
+    opacity: 0.7;
     transition: opacity 0.3s;
 }
 
 .trust-item:hover {
-    opacity: 0.8;
+    opacity: 1;
 }
 
 .trust-icon {

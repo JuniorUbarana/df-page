@@ -91,32 +91,51 @@ document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
 /* ═══════════════════════════════════════════
    FORM SUBMISSION (with visual feedback)
 ═══════════════════════════════════════════ */
-document.getElementById("contactForm").addEventListener("submit", function (e) {
+document.getElementById("contactForm").addEventListener("submit", async function (e) {
     e.preventDefault();
 
-    const btn = this.querySelector('button[type="submit"]');
+    const form = this;
+    const btn = form.querySelector('button[type="submit"]');
     const originalHTML = btn.innerHTML;
+    const formData = new FormData(form);
 
     // Loading state
     btn.innerHTML = "<span>Enviando...</span>";
     btn.disabled = true;
     btn.style.opacity = "0.7";
 
-    // Simulate sending
-    setTimeout(() => {
-        // Success state
-        btn.innerHTML = "<span>✓ Enviado com sucesso</span>";
-        btn.style.background = "linear-gradient(135deg, #10b981, #059669)";
+    try {
+        const response = await fetch(form.action, {
+            method: form.method,
+            body: formData,
+            headers: {
+                'Accept': 'application/json'
+            }
+        });
 
+        if (response.ok) {
+            // Success state
+            btn.innerHTML = "<span>✓ Enviado com sucesso</span>";
+            btn.style.background = "linear-gradient(135deg, #10b981, #059669)";
+            form.reset();
+        } else {
+            const data = await response.json();
+            throw new Error(data.error || "Erro no envio");
+        }
+    } catch (error) {
+        // Error state
+        console.error("Form error:", error);
+        btn.innerHTML = "<span>✕ Erro no envio</span>";
+        btn.style.background = "linear-gradient(135deg, #ef4444, #dc2626)";
+    } finally {
         // Reset after delay
         setTimeout(() => {
             btn.innerHTML = originalHTML;
             btn.disabled = false;
             btn.style.opacity = "1";
             btn.style.background = "";
-            this.reset();
-        }, 2500);
-    }, 1500);
+        }, 3000);
+    }
 });
 
 /* ═══════════════════════════════════════════
