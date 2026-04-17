@@ -4,6 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DataFacil Compliance | Auditoria LGPD & ISO 27701</title>
+    <meta name="description" content="Auditoria especializada em conformidade LGPD e ISO 27701 para escolas, academias, clínicas e instituições na Paraíba. Proteja seus dados com rigor técnico.">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://datafacilcompliance.com.br/">
+    <meta property="og:title" content="DataFacil Compliance | Auditoria LGPD & ISO 27701">
+    <meta property="og:description" content="Auditoria especializada em conformidade LGPD e ISO 27701. Transformando a complexidade da proteção de dados em segurança jurídica.">
+    <meta property="og:image" content="./public/images/DF_banner.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://datafacilcompliance.com.br/">
+    <meta property="twitter:title" content="DataFacil Compliance | Auditoria LGPD & ISO 27701">
+    <meta property="twitter:description" content="Auditoria especializada em conformidade LGPD e ISO 27701. Transformando a complexidade da proteção de dados em segurança jurídica.">
+    <meta property="twitter:image" content="./public/images/DF_banner.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -547,7 +562,11 @@
                 <div class="contact-form-wrapper reveal">
                     <h3 class="form-title">Solicite sua auditoria</h3>
                     <p class="form-subtitle">Preencha os dados abaixo e retornaremos em até 24 horas úteis.</p>
-                    <form id="contactForm" action="https://formspree.io/f/xqewqkro" method="POST">
+                     <form id="contactForm" action="https://formspree.io/f/xqewqkro" method="POST">
+                        <!-- Formspree Config -->
+                        <input type="text" name="_gotcha" style="display:none">
+                        <input type="hidden" name="_subject" value="Nova Solicitação de Auditoria - DataFacil">
+
                         <div class="form-row">
                             <div class="form-group">
                                 <label for="name">Nome</label>
@@ -558,6 +577,25 @@
                                 <input type="text" id="company" name="company" placeholder="Nome da empresa" required>
                             </div>
                         </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="whatsapp">WhatsApp / Telefone</label>
+                                <input type="tel" id="whatsapp" name="whatsapp" placeholder="(83) 99999-9999" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="industry">Área de Atuação</label>
+                                <select id="industry" name="industry" required>
+                                    <option value="">Selecione a área</option>
+                                    <option value="Escola">Escola</option>
+                                    <option value="Academia">Academia</option>
+                                    <option value="Clínica">Clínica</option>
+                                    <option value="Igreja">Igreja</option>
+                                    <option value="Outros">Outros</option>
+                                </select>
+                            </div>
+                        </div>
+
                         <div class="form-group">
                             <label for="email">E-mail Corporativo</label>
                             <input type="email" id="email" name="email" placeholder="seu@empresa.com.br" required>
@@ -579,12 +617,14 @@
                             <label for="message">Mensagem</label>
                             <textarea id="message" name="message" placeholder="Descreva brevemente sua necessidade..."></textarea>
                         </div>
-                        <button type="submit" class="btn btn-primary form-submit">
+                        <button type="submit" class="btn btn-primary form-submit" id="submitBtn">
                             <span>Enviar Solicitação</span>
                             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" />
                             </svg>
                         </button>
+
+                        <div id="formStatus" class="form-status"></div>
                         <p class="form-note">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />

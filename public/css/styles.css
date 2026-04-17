@@ -1605,6 +1605,35 @@ a {
     color: var(--gold);
 }
 
+.form-status {
+    margin-top: 24px;
+    padding: 16px;
+    font-size: 14px;
+    text-align: center;
+    display: none;
+    animation: fadeIn 0.5s var(--ease-out);
+    border: 1px solid transparent;
+}
+
+.form-status.success {
+    display: block;
+    background: rgba(16, 185, 129, 0.05);
+    border-color: rgba(16, 185, 129, 0.2);
+    color: #10b981;
+}
+
+.form-status.error {
+    display: block;
+    background: rgba(239, 68, 68, 0.05);
+    border-color: rgba(239, 68, 68, 0.2);
+    color: #ef4444;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
 /* ═══════════════════════════════════════════
    FOOTER
 ═══════════════════════════════════════════ */

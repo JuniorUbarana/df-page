@@ -96,6 +96,7 @@ document.getElementById("contactForm").addEventListener("submit", async function
 
     const form = this;
     const btn = form.querySelector('button[type="submit"]');
+    const status = document.getElementById("formStatus");
     const originalHTML = btn.innerHTML;
     const formData = new FormData(form);
 
@@ -103,6 +104,8 @@ document.getElementById("contactForm").addEventListener("submit", async function
     btn.innerHTML = "<span>Enviando...</span>";
     btn.disabled = true;
     btn.style.opacity = "0.7";
+    status.style.display = "none";
+    status.className = "form-status";
 
     try {
         const response = await fetch(form.action, {
@@ -115,8 +118,12 @@ document.getElementById("contactForm").addEventListener("submit", async function
 
         if (response.ok) {
             // Success state
-            btn.innerHTML = "<span>✓ Enviado com sucesso</span>";
+            btn.innerHTML = "<span>✓ Enviado</span>";
             btn.style.background = "linear-gradient(135deg, #10b981, #059669)";
+            
+            status.innerHTML = "Mensagem enviada, Aguarde o contato de nossa equipe.";
+            status.classList.add("success");
+            
             form.reset();
         } else {
             const data = await response.json();
@@ -125,15 +132,23 @@ document.getElementById("contactForm").addEventListener("submit", async function
     } catch (error) {
         // Error state
         console.error("Form error:", error);
-        btn.innerHTML = "<span>✕ Erro no envio</span>";
+        btn.innerHTML = "<span>✕ Erro</span>";
         btn.style.background = "linear-gradient(135deg, #ef4444, #dc2626)";
+        
+        status.innerHTML = "Ocorreu um erro no envio. Por favor, tente novamente.";
+        status.classList.add("error");
     } finally {
-        // Reset after delay
+        // Reset button after delay, but keep success message visible longer
         setTimeout(() => {
             btn.innerHTML = originalHTML;
             btn.disabled = false;
             btn.style.opacity = "1";
             btn.style.background = "";
+            
+            // Fade out status after 8 seconds
+            setTimeout(() => {
+                status.style.display = "none";
+            }, 5000);
         }, 3000);
     }
 });
