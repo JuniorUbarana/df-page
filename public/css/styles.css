@@ -384,38 +384,16 @@ a {
     gap: 14px;
 }
 
-.nav-logo-icon {
-    width: 40px;
-    height: 40px;
-    border: 1px solid var(--gold);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
+.nav-logo-img {
+    height: 45px;
+    width: auto;
+    object-fit: contain;
+    display: block;
+    transition: transform 0.4s var(--ease-out);
 }
 
-.nav-logo-icon::before {
-    content: "";
-    position: absolute;
-    inset: 3px;
-    border: 1px solid rgba(185, 154, 69, 0.3);
-}
-
-.nav-logo-icon svg {
-    width: 18px;
-    height: 18px;
-    color: var(--gold);
-}
-
-.nav-logo-text {
-    font-family: var(--font-display);
-    font-size: 20px;
-    color: var(--white-pure);
-    letter-spacing: 2px;
-}
-
-.nav-logo-text span {
-    color: var(--gold);
+.nav-logo:hover .nav-logo-img {
+    transform: scale(1.04);
 }
 
 .nav-links {
@@ -821,6 +799,13 @@ a {
     object-fit: cover;
     filter: grayscale(20%);
     transition: all 0.8s var(--ease-out);
+}
+
+.about-image-frame img[src*="banner"],
+.about-image-frame img[src*="logo"] {
+    object-fit: contain;
+    background: rgba(255, 255, 255, 0.03);
+    padding: 40px;
 }
 
 .about-image-frame:hover img {
@@ -1882,4 +1867,28 @@ a {
         gap: 16px;
         text-align: center;
     }
+}
+/* -------------------------------------------
+   BRANDING ENHANCEMENTS
+   ------------------------------------------- */
+.about-branding {
+    margin-top: 80px;
+    padding-top: 60px;
+    border-top: 1px solid var(--border-light);
+    display: flex;
+    justify-content: center;
+    opacity: 0.6;
+    transition: all 0.5s var(--ease-out);
+}
+
+.about-branding img {
+    max-width: 500px;
+    width: 100%;
+    height: auto;
+    filter: brightness(1.2) contrast(1.1);
+}
+
+.about-branding:hover {
+    opacity: 1;
+    transform: translateY(-5px);
 }
