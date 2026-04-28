@@ -5,7 +5,7 @@ const GEMINI_API_KEY = Deno.env.get('GEMINI_API_KEY')
 const SUPABASE_URL = Deno.env.get('SUPABASE_URL')
 const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')
 
-serve(async (req) => {
+serve(async (req: Request) => {
   try {
     const supabase = createClient(SUPABASE_URL!, SUPABASE_SERVICE_ROLE_KEY!)
 
@@ -15,7 +15,7 @@ serve(async (req) => {
       .select('hash')
       .limit(100)
     
-    const excludedHashes = previousItems?.map(i => i.hash) || []
+    const excludedHashes = previousItems?.map((i: any) => i.hash) || []
 
     // 2. Official AI Prompt
     const officialPrompt = `
@@ -35,10 +35,11 @@ OBJETIVO
 
 Realizar busca aprofundada no LinkedIn, Reddit e principais portais sobre PRIVACIDADE DE DADOS, com foco em:
 
-1) Escolas (biometria, reconhecimento facial, apps educacionais, IA, dados de alunos)
-2) Academias (biometria, dados de saúde, catracas, aplicativos, vazamentos)
-3) Aplicação do ECA Digital
-4) Conexões práticas com LGPD e ISO 27701
+1) Escolas (biometria, reconhecimento facial, apps educacionais, IA, dados de alunos, publicações em redes sociais que gerem dano à imagem ou à privacidade)
+2) Academias (biometria, dados de saúde, catracas, aplicativos, vazamentos, publicações em redes sociais que gerem dano à imagem ou à privacidade)
+3) Igrejas (dados pessoais, aplicativos, vazamentos, publicações em redes sociais que gerem dano à imagem ou à privacidade)
+4) Aplicação do ECA Digital
+5) Conexões práticas com LGPD e ISO 27701
 
 ====================================================================
 CONTROLE DE DUPLICIDADE (BASES JÁ EXISTENTES)
@@ -122,7 +123,7 @@ Incluir seção final:
       headers: { "Content-Type": "application/json" },
     })
 
-  } catch (error) {
+  } catch (error: any) {
     return new Response(JSON.stringify({ error: error.message }), {
       status: 500,
       headers: { "Content-Type": "application/json" },
