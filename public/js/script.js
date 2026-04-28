@@ -163,3 +163,58 @@ window.addEventListener("scroll", () => {
         heroImage.style.transform = `translateY(${scrolled * 0.3}px)`;
     }
 });
+
+/* ═══════════════════════════════════════════
+   NEWSLETTER SUBSCRIPTION
+   ═══════════════════════════════════════════ */
+import { subscribeUser } from './users.js';
+
+const newsForm = document.getElementById("newsletterForm");
+if (newsForm) {
+    newsForm.addEventListener("submit", async function (e) {
+        e.preventDefault();
+
+        const form = this;
+        const btn = document.getElementById("nlSubmitBtn");
+        const status = document.getElementById("nlFormStatus");
+        const originalHTML = btn.innerHTML;
+
+        // Loading state
+        btn.innerHTML = "<span>Processando...</span>";
+        btn.disabled = true;
+        status.style.display = "none";
+        status.className = "form-status";
+
+        try {
+            const formData = new FormData(form);
+            const email = formData.get("email");
+            const name = formData.get("name");
+
+            await subscribeUser(email, name);
+
+            // Success state
+            btn.innerHTML = "<span>✓ Inscrito</span>";
+            btn.style.background = "linear-gradient(135deg, #10b981, #059669)";
+            
+            status.innerHTML = "Obrigado por se inscrever! Você receberá nossa próxima edição.";
+            status.classList.add("success");
+            status.style.display = "block";
+            
+            form.reset();
+        } catch (error) {
+            console.error("Newsletter error:", error);
+            btn.innerHTML = "<span>✕ Erro</span>";
+            btn.style.background = "linear-gradient(135deg, #ef4444, #dc2626)";
+            
+            status.innerHTML = "Ocorreu um erro. Verifique seu e-mail e tente novamente.";
+            status.classList.add("error");
+            status.style.display = "block";
+        } finally {
+            setTimeout(() => {
+                btn.innerHTML = originalHTML;
+                btn.disabled = false;
+                btn.style.background = "";
+            }, 3000);
+        }
+    });
+}

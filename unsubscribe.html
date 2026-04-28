@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Desinscrição da Newsletter | DataFacil</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="public/css/style.css">
+    
+    <!-- Icones (Phosphor Icons) -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            justify-content: center;
+            align-items: center;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Open Sans', sans-serif;
+            text-align: center;
+        }
+
+        .unsubscribe-card {
+            background-color: var(--card-bg);
+            border: 1px solid rgba(200, 169, 126, 0.2);
+            border-radius: 12px;
+            padding: 40px;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            margin: 20px;
+        }
+
+        .unsubscribe-icon {
+            font-size: 48px;
+            color: var(--accent-color);
+            margin-bottom: 20px;
+        }
+
+        .unsubscribe-card h1 {
+            font-family: 'Montserrat', sans-serif;
+            color: var(--accent-color);
+            margin-bottom: 15px;
+            font-size: 1.8rem;
+        }
+
+        .unsubscribe-card p {
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .status-message {
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .status-message.loading { color: var(--text-muted); }
+        .status-message.success { color: #4caf50; }
+        .status-message.error { color: #f44336; }
+
+        .btn-return {
+            display: inline-block;
+            background: transparent;
+            color: var(--accent-color);
+            border: 1px solid var(--accent-color);
+            padding: 12px 24px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-return:hover {
+            background: var(--accent-color);
+            color: var(--bg-color);
+        }
+        
+        /* Logo */
+        .logo {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-color);
+            text-decoration: none;
+            margin-bottom: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo span {
+            color: var(--accent-color);
+            font-size: 1.8rem;
+            line-height: 1;
+            margin-right: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <a href="index.html" class="logo">
+        <span><i class="ph-fill ph-shield-check"></i></span>
+        datafacil
+    </a>
+
+    <div class="unsubscribe-card">
+        <i class="ph ph-envelope-simple-open unsubscribe-icon"></i>
+        <h1>Preferências de E-mail</h1>
+        
+        <p>Estamos processando o seu pedido de desinscrição. Por favor, aguarde um momento.</p>
+        
+        <div id="statusMessage" class="status-message loading">Processando...</div>
+        
+        <a href="index.html" class="btn-return">Voltar para o Início</a>
+    </div>
+
+    <!-- Scripts Supabase -->
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <script type="module" src="public/js/unsubscribe.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Area | DataFacil Newsletter</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --gold: #b99a45;
+            --gold-dark: #8e7634;
+            --black: #1e1e1e;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #121212;
+            color: #e5e5e5;
+        }
+        .font-display {
+            font-family: 'Playfair Display', serif;
+        }
+        .gold-gradient {
+            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+        }
+        .btn-gold {
+            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+            transition: all 0.3s ease;
+        }
+        .btn-gold:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(185, 154, 69, 0.2);
+        }
+        .glass-card {
+            background: rgba(30, 30, 30, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(185, 154, 69, 0.1);
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+    <!-- Navigation -->
+    <nav class="border-b border-white/5 bg-black/50 backdrop-blur-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-full gold-gradient flex items-center justify-center text-black font-bold">DF</div>
+                    <span class="text-xl font-display font-bold tracking-tight">Admin <span class="text-[#b99a45]">Newsletter</span></span>
+                </div>
+                <div class="flex items-center gap-4">
+                    <button id="logoutBtn" class="text-sm text-gray-400 hover:text-white transition-colors">Sair</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        <!-- Header Actions -->
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10">
+            <div>
+                <h1 class="text-3xl font-display font-medium text-white">Dashboard</h1>
+                <p class="text-gray-400 mt-1">Gerencie seus assinantes e edições da newsletter.</p>
+            </div>
+            <div class="flex flex-wrap gap-3">
+                <button id="generateNlBtn" class="btn-gold px-6 py-2.5 rounded-md text-black font-semibold flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
+                    </svg>
+                    Gerar Nova Newsletter
+                </button>
+                <button id="sendNlBtn" class="bg-white/5 hover:bg-white/10 px-6 py-2.5 rounded-md text-white font-semibold transition-all border border-white/10 flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                        <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z" />
+                    </svg>
+                    Enviar Mensagem
+                </button>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Left Col: Subscribers -->
+            <div class="lg:col-span-2 space-y-8">
+                <div class="glass-card rounded-xl overflow-hidden">
+                    <div class="px-6 py-4 border-b border-white/5 flex justify-between items-center">
+                        <h2 class="text-lg font-medium">Assinantes Ativos</h2>
+                        <span id="subscriberCount" class="bg-[#b99a45]/20 text-[#b99a45] text-xs font-bold px-2.5 py-1 rounded-full">0</span>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left">
+                            <thead class="text-xs uppercase text-gray-500 bg-black/20">
+                                <tr>
+                                    <th class="px-6 py-3">Nome</th>
+                                    <th class="px-6 py-3">E-mail</th>
+                                    <th class="px-6 py-3">Data</th>
+                                    <th class="px-6 py-3 text-right">Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody id="subscriberList" class="divide-y divide-white/5 text-sm">
+                                <!-- Users will be listed here -->
+                                <tr>
+                                    <td colspan="4" class="px-6 py-10 text-center text-gray-500 italic">Carregando assinantes...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Col: History & Stats -->
+            <div class="space-y-8">
+                <div class="glass-card rounded-xl p-6">
+                    <h2 class="text-lg font-medium mb-4">Estatísticas Rápidas</h2>
+                    <div class="grid grid-cols-1 gap-4">
+                        <div class="bg-black/30 p-4 rounded-lg border border-white/5">
+                            <p class="text-gray-400 text-xs uppercase tracking-wider">Total de Envios</p>
+                            <p class="text-2xl font-display mt-1">0</p>
+                        </div>
+                        <div class="bg-black/30 p-4 rounded-lg border border-white/5">
+                            <p class="text-gray-400 text-xs uppercase tracking-wider">Última Geração</p>
+                            <p id="lastGeneration" class="text-sm mt-1 text-gray-200">Sem histórico</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass-card rounded-xl overflow-hidden">
+                    <div class="px-6 py-4 border-b border-white/5">
+                        <h2 class="text-lg font-medium">Edições Anteriores</h2>
+                    </div>
+                    <div id="newsletterHistory" class="p-4 space-y-3">
+                        <p class="text-sm text-gray-500 italic text-center py-4">Nenhuma edição encontrada.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Preview Modal (Hidden by default) -->
+    <div id="previewModal" class="fixed inset-0 z-[100] hidden">
+        <div class="absolute inset-0 bg-black/80 backdrop-blur-sm"></div>
+        <div class="absolute inset-x-4 inset-y-10 md:inset-20 bg-[#1e1e1e] rounded-2xl border border-white/10 flex flex-col shadow-2xl">
+            <div class="px-6 py-4 border-b border-white/5 flex justify-between items-center">
+                <h3 class="text-xl font-display font-medium">Preview da Newsletter</h3>
+                <button id="closePreview" class="text-gray-400 hover:text-white">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+            <div class="flex-1 overflow-y-auto p-8 bg-white text-black" id="previewContent">
+                <!-- AI Content will be injected here -->
+            </div>
+            <div class="px-6 py-4 border-t border-white/5 flex justify-end gap-3">
+                <button id="discardBtn" class="px-4 py-2 border border-white/10 rounded-md text-gray-400 hover:text-white">Descartar</button>
+                <button id="saveNlBtn" class="btn-gold px-6 py-2 rounded-md text-black font-bold">Salvar Edição</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <script type="module" src="../services/supabase.js"></script>
+    <script type="module" src="../public/js/users.js"></script>
+    <script type="module" src="../public/js/newsletter.js"></script>
+    <script type="module" src="../public/js/admin.js"></script>
+</body>
+</html>

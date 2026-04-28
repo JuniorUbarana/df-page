@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Administrativo | DataFacil</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --gold: #b99a45;
+            --gold-dark: #8e7634;
+            --black: #1e1e1e;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #121212;
+            color: #e5e5e5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            position: relative;
+            overflow: hidden;
+        }
+        .font-display {
+            font-family: 'Playfair Display', serif;
+        }
+        .gold-gradient {
+            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+        }
+        .text-gold {
+            color: var(--gold);
+        }
+        .btn-gold {
+            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+            transition: all 0.3s ease;
+        }
+        .btn-gold:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(185, 154, 69, 0.2);
+        }
+        .glass-card {
+            background: rgba(30, 30, 30, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(185, 154, 69, 0.15);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+        /* Background decorative elements */
+        .bg-glow {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(185, 154, 69, 0.05) 0%, rgba(18, 18, 18, 0) 70%);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: -1;
+            border-radius: 50%;
+        }
+        .input-field {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+            transition: all 0.3s ease;
+        }
+        .input-field:focus {
+            outline: none;
+            border-color: var(--gold);
+            box-shadow: 0 0 0 2px rgba(185, 154, 69, 0.2);
+        }
+        .form-status {
+            display: none;
+            padding: 10px;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            margin-bottom: 1rem;
+        }
+        .form-status.error {
+            display: block;
+            background-color: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: #fca5a5;
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-glow"></div>
+
+    <div class="glass-card rounded-2xl w-full max-w-md p-8 sm:p-10 mx-4 relative z-10">
+        <div class="flex justify-center mb-6">
+            <div class="w-12 h-12 rounded-full gold-gradient flex items-center justify-center text-black font-bold text-xl">DF</div>
+        </div>
+        <div class="text-center mb-8">
+            <h1 class="text-2xl font-display font-medium text-white tracking-wide">Acesso <span class="text-gold">Administrativo</span></h1>
+            <p class="text-sm text-gray-400 mt-2">Faça login para gerenciar o sistema</p>
+        </div>
+
+        <div id="loginStatus" class="form-status"></div>
+
+        <form id="loginForm" class="space-y-5">
+            <div>
+                <label for="email" class="block text-sm font-medium text-gray-300 mb-1">E-mail Corporativo</label>
+                <input type="email" id="email" name="email" required class="input-field w-full px-4 py-3 rounded-lg" placeholder="admin@datafacil.com.br">
+            </div>
+            
+            <div>
+                <label for="password" class="block text-sm font-medium text-gray-300 mb-1">Senha</label>
+                <input type="password" id="password" name="password" required class="input-field w-full px-4 py-3 rounded-lg" placeholder="••••••••">
+            </div>
+
+            <div class="pt-2">
+                <button type="submit" id="loginBtn" class="btn-gold w-full py-3 rounded-lg text-black font-bold text-[15px] flex justify-center items-center gap-2">
+                    <span>Entrar no Painel</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M3 3a1 1 0 00-1 1v12a1 1 0 102 0V4a1 1 0 00-1-1zm10.293 9.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L14.586 9H7a1 1 0 100 2h7.586l-1.293 1.293z" clip-rule="evenodd" />
+                    </svg>
+                </button>
+            </div>
+        </form>
+        <div class="mt-8 text-center">
+            <a href="../index.html" class="text-xs text-gray-500 hover:text-gold transition-colors flex items-center justify-center gap-1">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+                </svg>
+                Voltar para o site
+            </a>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <script type="module">
+        import { loginUser, isAuthenticated } from '../public/js/auth.js';
+
+        // Check if already logged in
+        document.addEventListener('DOMContentLoaded', async () => {
+            const isAuth = await isAuthenticated();
+            if (isAuth) {
+                window.location.href = 'index.html';
+            }
+        });
+
+        const form = document.getElementById('loginForm');
+        const statusEl = document.getElementById('loginStatus');
+        const btn = document.getElementById('loginBtn');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const originalHTML = btn.innerHTML;
+
+            btn.disabled = true;
+            btn.innerHTML = '<span>Entrando...</span>';
+            btn.style.opacity = '0.7';
+            statusEl.classList.remove('error');
+
+            try {
+                await loginUser(email, password);
+                // Login successful
+                btn.innerHTML = '<span>✓ Conectado</span>';
+                btn.style.background = 'linear-gradient(135deg, #10b981, #059669)';
+                
+                // Redirect to admin panel
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 800);
+            } catch (error) {
+                console.error('Login error:', error);
+                
+                let errorMsg = error.message || 'Ocorreu um erro desconhecido.';
+                if (errorMsg === 'Invalid login credentials') {
+                    errorMsg = 'E-mail ou senha incorretos.';
+                } else if (errorMsg === 'Email not confirmed') {
+                    errorMsg = 'E-mail não confirmado. Verifique sua caixa de entrada.';
+                }
+                
+                statusEl.textContent = errorMsg;
+                statusEl.classList.add('error');
+                
+                btn.innerHTML = originalHTML;
+                btn.disabled = false;
+                btn.style.opacity = '1';
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1921,3 +1921,133 @@ a {
     opacity: 1;
     transform: translateY(-5px);
 }
+
+/* ═══════════════════════════════════════════
+   NEWSLETTER SECTION
+   ═══════════════════════════════════════════ */
+.newsletter-section {
+    padding-bottom: 100px;
+}
+
+.newsletter-card {
+    background: linear-gradient(135deg, rgba(30, 30, 30, 0.8), rgba(20, 20, 20, 0.9));
+    border: 1px solid var(--border-light);
+    border-radius: 4px;
+    padding: 80px;
+    position: relative;
+    overflow: hidden;
+    backdrop-filter: blur(20px);
+}
+
+.newsletter-card::before {
+    content: "";
+    position: absolute;
+    top: -50%;
+    right: -20%;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(185, 154, 69, 0.03) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+.newsletter-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 80px;
+    align-items: center;
+    position: relative;
+    z-index: 2;
+}
+
+.newsletter-perks {
+    list-style: none;
+    margin-top: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.newsletter-perks li {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    font-size: 16px;
+    color: var(--white);
+}
+
+.newsletter-perks li svg {
+    width: 20px;
+    height: 20px;
+    color: var(--gold);
+    flex-shrink: 0;
+}
+
+.newsletter-form-container {
+    background: rgba(0, 0, 0, 0.3);
+    padding: 40px;
+    border: 1px solid var(--border-light);
+    border-radius: 4px;
+}
+
+.newsletter-form {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.newsletter-form .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.newsletter-form label {
+    font-size: 12px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+}
+
+.newsletter-form input {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border-light);
+    padding: 16px;
+    color: var(--white);
+    font-family: var(--font-body);
+    font-size: 15px;
+    width: 100%;
+    transition: all 0.3s;
+}
+
+.newsletter-form input:focus {
+    outline: none;
+    border-color: var(--gold);
+    background: rgba(185, 154, 69, 0.05);
+}
+
+.newsletter-form .form-note {
+    font-size: 12px;
+    color: var(--text-muted);
+    text-align: center;
+    margin-top: 8px;
+}
+
+.w-full {
+    width: 100%;
+}
+
+@media (max-width: 1024px) {
+    .newsletter-card {
+        padding: 60px 40px;
+    }
+    .newsletter-grid {
+        grid-template-columns: 1fr;
+        gap: 60px;
+    }
+}
+
+@media (max-width: 768px) {
+    .newsletter-card {
+        padding: 40px 24px;
+    }
+}
