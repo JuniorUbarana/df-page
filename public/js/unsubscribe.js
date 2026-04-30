@@ -1,4 +1,4 @@
-import supabase from '../../services/supabase.js';
+import { unsubscribeUser } from './users.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
     const statusMessage = document.getElementById('statusMessage');
@@ -18,17 +18,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         statusMessage.className = 'status-message loading';
 
         // Atualizar o status do usuário para inativo com base no token
-        const { data, error } = await supabase
-            .from('subscribers')
-            .update({ active: false })
-            .eq('unsubscribe_token', token)
-            .select();
+        const updatedDocs = await unsubscribeUser(token);
 
-        if (error) {
-            throw error;
-        }
-
-        if (data && data.length > 0) {
+        if (updatedDocs && updatedDocs.length > 0) {
             statusMessage.textContent = 'Você foi desinscrito com sucesso. Não enviaremos mais e-mails para você.';
             statusMessage.className = 'status-message success';
         } else {
@@ -38,7 +30,11 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     } catch (err) {
         console.error('Erro ao desinscrever:', err);
-        statusMessage.textContent = 'Ocorreu um erro ao processar a solicitação. Tente novamente mais tarde.';
+        if (err.message === "Token não encontrado.") {
+            statusMessage.textContent = 'Não encontramos uma inscrição ativa com este código ou você já foi desinscrito.';
+        } else {
+            statusMessage.textContent = 'Ocorreu um erro ao processar a solicitação. Tente novamente mais tarde.';
+        }
         statusMessage.className = 'status-message error';
     }
 });

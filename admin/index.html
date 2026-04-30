@@ -69,7 +69,7 @@
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                         <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
                     </svg>
-                    Gerar Nova Newsletter
+                    Adicionar Newsletter
                 </button>
                 <button id="sendNlBtn" class="bg-white/5 hover:bg-white/10 px-6 py-2.5 rounded-md text-white font-semibold transition-all border border-white/10 flex items-center gap-2">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
@@ -149,9 +149,7 @@
                     </svg>
                 </button>
             </div>
-            <div class="flex-1 overflow-y-auto p-8 bg-white text-black" id="previewContent">
-                <!-- AI Content will be injected here -->
-            </div>
+            <textarea id="previewContent" class="flex-1 w-full p-6 bg-white text-black resize-none focus:outline-none" placeholder="Cole o conteúdo da sua newsletter aqui..."></textarea>
             <div class="px-6 py-4 border-t border-white/5 flex justify-end gap-3">
                 <button id="discardBtn" class="px-4 py-2 border border-white/10 rounded-md text-gray-400 hover:text-white">Descartar</button>
                 <button id="saveNlBtn" class="btn-gold px-6 py-2 rounded-md text-black font-bold">Salvar Edição</button>
@@ -160,8 +158,8 @@
     </div>
 
     <!-- Scripts -->
-    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
-    <script type="module" src="../services/supabase.js"></script>
+
+    <script type="module" src="../services/firebase.js"></script>
     <script type="module" src="../public/js/users.js"></script>
     <script type="module" src="../public/js/newsletter.js"></script>
     <script type="module" src="../public/js/admin.js"></script>

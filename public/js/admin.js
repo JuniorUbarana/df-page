@@ -1,5 +1,5 @@
 import { listSubscribers, deleteSubscriber } from './users.js';
-import { getNewsletterHistory, generateNewsletter, saveNewsletter } from './newsletter.js';
+import { getNewsletterHistory, saveNewsletter } from './newsletter.js';
 import { isAuthenticated, logoutUser } from './auth.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -13,10 +13,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     await refreshDashboard();
 
     // Event Listeners
-    document.getElementById('generateNlBtn').addEventListener('click', handleGenerate);
+    document.getElementById('generateNlBtn').addEventListener('click', handleCreateManual);
     document.getElementById('closePreview').addEventListener('click', togglePreview);
     document.getElementById('saveNlBtn').addEventListener('click', handleSave);
     document.getElementById('discardBtn').addEventListener('click', togglePreview);
+    document.getElementById('sendNlBtn').addEventListener('click', handleSend);
     
     // Logout functionality
     document.getElementById('logoutBtn').addEventListener('click', async () => {
@@ -66,8 +67,11 @@ function renderSubscribers(users) {
     `).join('');
 }
 
+window.globalNewsletterHistory = [];
+
 function renderHistory(history) {
     const container = document.getElementById('newsletterHistory');
+    window.globalNewsletterHistory = history;
     
     if (history.length === 0) {
         container.innerHTML = `<p class="text-sm text-gray-500 italic text-center py-4">Nenhuma edição encontrada.</p>`;
@@ -75,7 +79,7 @@ function renderHistory(history) {
     }
 
     container.innerHTML = history.map(nl => `
-        <div class="flex items-center justify-between p-3 bg-black/20 rounded-lg border border-white/5 hover:border-gold/30 transition-all cursor-pointer">
+        <div onclick="window.viewNewsletter('${nl.id}')" class="flex items-center justify-between p-3 bg-black/20 rounded-lg border border-white/5 hover:border-gold/30 transition-all cursor-pointer">
             <div>
                 <p class="text-sm font-medium text-gray-200">Edição de ${new Date(nl.created_at).toLocaleDateString()}</p>
                 <p class="text-xs text-gray-500">${nl.content.substring(0, 40)}...</p>
@@ -93,37 +97,44 @@ function updateStats(subscribers, history) {
     }
 }
 
-let currentPreviewContent = '';
-
-async function handleGenerate() {
-    const btn = document.getElementById('generateNlBtn');
-    const originalText = btn.innerHTML;
+async function handleCreateManual() {
+    const textarea = document.getElementById('previewContent');
+    textarea.value = '';
+    textarea.readOnly = false;
     
-    try {
-        btn.disabled = true;
-        btn.innerHTML = 'Gerando...';
-        
-        const result = await generateNewsletter();
-        currentPreviewContent = result.content;
-        
-        document.getElementById('previewContent').innerHTML = currentPreviewContent;
-        togglePreview();
-    } catch (error) {
-        alert('Erro ao gerar newsletter: ' + error.message);
-    } finally {
-        btn.disabled = false;
-        btn.innerHTML = originalText;
-    }
+    // Restore modal to "Creation" state
+    document.querySelector('#previewModal h3').textContent = 'Colar Nova Newsletter';
+    document.getElementById('saveNlBtn').style.display = 'block';
+    document.getElementById('discardBtn').textContent = 'Cancelar';
+    
+    togglePreview();
 }
 
 async function handleSave() {
     try {
-        await saveNewsletter(currentPreviewContent);
+        const content = document.getElementById('previewContent').value;
+        if (!content.trim()) {
+            alert('A newsletter não pode estar vazia.');
+            return;
+        }
+
+        const btn = document.getElementById('saveNlBtn');
+        const originalText = btn.innerHTML;
+        btn.disabled = true;
+        btn.innerHTML = 'Salvando...';
+
+        await saveNewsletter(content);
+        
+        btn.disabled = false;
+        btn.innerHTML = originalText;
+
         togglePreview();
         await refreshDashboard();
         alert('Newsletter salva com sucesso!');
     } catch (error) {
         alert('Erro ao salvar: ' + error.message);
+        document.getElementById('saveNlBtn').disabled = false;
+        document.getElementById('saveNlBtn').innerHTML = 'Salvar Edição';
     }
 }
 
@@ -132,10 +143,61 @@ function togglePreview() {
     modal.classList.toggle('hidden');
 }
 
+async function handleSend() {
+    const btn = document.getElementById('sendNlBtn');
+    const originalText = btn.innerHTML;
+    
+    try {
+        // Pega o histórico para enviar a última newsletter salva
+        const history = await getNewsletterHistory();
+        if (history.length === 0) {
+            alert('Não há nenhuma newsletter salva para enviar.');
+            return;
+        }
+        
+        const latestNewsletter = history[0]; // Pega a mais recente
+        
+        btn.disabled = true;
+        btn.innerHTML = 'Enviando...';
+        btn.style.opacity = '0.7';
+        
+        // Importa a função sendNewsletter se ela não estiver importada no topo
+        const { sendNewsletter } = await import('./newsletter.js');
+        const result = await sendNewsletter(latestNewsletter.id);
+        
+        alert(result.message || 'Newsletter enviada com sucesso aos assinantes!');
+    } catch (error) {
+        alert('Erro ao enviar: ' + error.message);
+    } finally {
+        btn.disabled = false;
+        btn.innerHTML = originalText;
+        btn.style.opacity = '1';
+    }
+}
+
 // Global scope for onclick handlers
 window.handleDeleteUser = async (id) => {
     if (confirm('Tem certeza que deseja remover este assinante?')) {
         await deleteSubscriber(id);
         await refreshDashboard();
     }
+};
+
+window.viewNewsletter = (id) => {
+    const nl = window.globalNewsletterHistory.find(n => n.id === id);
+    if (!nl) return;
+
+    // Configure modal for "View Only" state
+    const modalTitle = document.querySelector('#previewModal h3');
+    modalTitle.textContent = `Edição de ${new Date(nl.created_at).toLocaleDateString()}`;
+    
+    const textarea = document.getElementById('previewContent');
+    textarea.value = nl.content;
+    textarea.readOnly = true;
+    
+    // Hide Save button and change discard to Close
+    document.getElementById('saveNlBtn').style.display = 'none';
+    document.getElementById('discardBtn').textContent = 'Fechar';
+    
+    togglePreview();
 };

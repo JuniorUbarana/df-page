@@ -1,4 +1,5 @@
-import supabase from '../../services/supabase.js';
+import { auth } from '../../services/firebase.js';
+import { signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
 
 /**
  * Fazer login na aplicação
@@ -6,23 +7,21 @@ import supabase from '../../services/supabase.js';
  * @param {string} password
  */
 export async function loginUser(email, password) {
-    const { data, error } = await supabase.auth.signInWithPassword({
-        email: email,
-        password: password,
-    });
-
-    if (error) {
+    try {
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        return { user: userCredential.user };
+    } catch (error) {
         throw error;
     }
-    return data;
 }
 
 /**
  * Fazer logout da aplicação
  */
 export async function logoutUser() {
-    const { error } = await supabase.auth.signOut();
-    if (error) {
+    try {
+        await signOut(auth);
+    } catch (error) {
         throw error;
     }
 }
@@ -32,14 +31,22 @@ export async function logoutUser() {
  * @returns {Promise<boolean>} Retorna true se estiver logado
  */
 export async function isAuthenticated() {
-    const { data: { session } } = await supabase.auth.getSession();
-    return !!session;
+    return new Promise((resolve) => {
+        const unsubscribe = onAuthStateChanged(auth, (user) => {
+            unsubscribe();
+            resolve(!!user);
+        });
+    });
 }
 
 /**
  * Obter usuário atual
  */
 export async function getCurrentUser() {
-    const { data: { user } } = await supabase.auth.getUser();
-    return user;
+    return new Promise((resolve) => {
+        const unsubscribe = onAuthStateChanged(auth, (user) => {
+            unsubscribe();
+            resolve(user);
+        });
+    });
 }
