@@ -53,3 +53,9 @@ supabase/functions/node_modules/
 
 # Gemini / Antigravity (logs da IA)
 .gemini/
+
+# wrangler files
+.wrangler
+.dev.vars*
+!.dev.vars.example
+!.env.example
